@@ -3,12 +3,18 @@ const AlunoInvalidoError = require("../errors/AlunoInvalidoError");
 
 class AlunoService{
 
-    async findMany(page, pageSize){
+    async findMany(page, pageSize, orderBy, order){
         const alunos = await prisma.aluno.findMany({
             skip: (page-1)*pageSize,
-            take: Number(pageSize)
+            take: Number(pageSize),
+            orderBy: {
+                [orderBy]: order
+            }
         });
-        return alunos;
+
+        const total = await prisma.aluno.count();
+
+        return {alunos, total};
     }
 
     async create(aluno){
