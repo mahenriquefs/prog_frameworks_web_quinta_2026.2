@@ -21,10 +21,25 @@ class AlunoController{
 
     async findById(request, response){
         try{
-            const aluno = await alunoService.findById(request.params.id);
+            const {id} = request.params;
+            const aluno = await alunoService.findById(id);
+
             return response.status(200).json({aluno});
         }catch(error){
             return response.status(error.statusCode || 500).json({
+                error: error.message
+            });
+        }
+    }
+
+    async update(request, response){
+        try{
+            const {id} = request.params;
+            const aluno = await alunoService.update(id, request.body);
+
+            return response.status(200).json({aluno});
+        }catch(error){
+            return response.status(error.statusCode || 400).json({
                 error: error.message
             });
         }
