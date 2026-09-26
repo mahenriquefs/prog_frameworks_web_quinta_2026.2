@@ -19,6 +19,17 @@ class AlunoController{
         return response.status(200).json(resultado);
     }
 
+    async findById(request, response){
+        try{
+            const aluno = await alunoService.findById(request.params.id);
+            return response.status(200).json({aluno});
+        }catch(error){
+            return response.status(error.statusCode || 500).json({
+                error: error.message
+            });
+        }
+    }
+
     async create(request, response){
         try{
             const aluno = await alunoService.create(request.body);
